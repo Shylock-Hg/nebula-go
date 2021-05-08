@@ -39,7 +39,7 @@ func (cn *connection) open(hostAddress HostAddress, timeout time.Duration) error
 	}
 	// Set transport buffer
 	bufferedTranFactory := thrift.NewBufferedTransportFactory(bufferSize)
-	transport := thrift.NewFramedTransport(bufferedTranFactory.GetTransport(sock))
+	transport := thrift.NewFramedTransportMaxLength(bufferedTranFactory.GetTransport(sock), 30000000)
 	pf := thrift.NewBinaryProtocolFactoryDefault()
 	cn.graph = graph.NewGraphServiceClientFactory(transport, pf)
 	if err = cn.graph.Open(); err != nil {
